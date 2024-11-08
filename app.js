@@ -50,3 +50,51 @@ function onoff() {
     
 }
 
+//estudo de eventos relacionados à click do mouse (pressionado ou não pressionado) e telas touch
+//Passo 1: capturar os elementos do HTML (DOM)
+const botao = document.getElementById('button')
+const lampadaImg = document.getElementById('lamp')
+
+//passo 2: manipular o evento mouse pressionado
+//eddEventLister "escuta de eventos em tempo real"
+//mousedown - mouse pressionado constantemente
+//mouseup - soltar o botão do mouse
+//touchstart - tocar na tela e manter
+//touchend - deixar de pressionar a tela touch
+
+//pressionar o botão do mouse e manter no botão
+botao.addEventListener('mousedown', (event) => {
+    event.preventDefault() //ignorar o comportamento padrão
+    console.log("botão do mouse pressionado")
+    //se a lampada estiver intacta e o interruptor principal estiver desligado
+    if (lampada === true && chave === false){
+        lampadaImg.src = "img/on.jpg"
+    }
+})
+
+//deixar de pressionar o mouse no botão
+botao.addEventListener('mouseup', (event) => {
+    event.preventDefault() //ignorar o comportamento padrão
+    console.log("botão do mouse solto")
+    if (lampada === true && chave === false){
+        lampadaImg.src = "img/off.jpg"
+    }
+})
+
+//pressionar a tela touch e manter no botão
+botao.addEventListener('touchstart', (event) => {
+    event.preventDefault() //ignorar o comportamento padrão
+    console.log("tela pressionada no botão")
+    if (lampada === true && chave === false){
+        lampadaImg.src = "img/on.jpg"
+    }
+})
+
+//deixar de pressionar a tela touch no botão
+botao.addEventListener('touchend', (event) => {
+    event.preventDefault() //ignorar o comportamento padrão
+    console.log("a tela não está presionada no botão")
+    if (lampada === true && chave === false){
+        lampadaImg.src = "img/off.jpg"
+    }
+})
