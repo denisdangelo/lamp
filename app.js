@@ -9,6 +9,9 @@ let lampada = true //a lampada esta ok
 let som = new Audio("sound/breaking-glass.mp3")
     //som.src = "sound/glassbreaking.wav" - outra forma de chamar o som, para quando tiver mais de um audio
 
+// lanterna (pré carregamento)
+let stream, track //variaveis de apoio à lanterna
+inicializarLanterna()
 
 function quebrar() {
     if (lampada === true) {
@@ -98,3 +101,40 @@ botao.addEventListener('touchend', (event) => {
         lampadaImg.src = "img/off.jpg"
     }
 })
+
+//lanterna (torch)
+//try cat - tratamento de excessões
+async function incializarLanterna(){
+    try {
+        // Solicita acesso à câmera traseira sem exibir o vídeo
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: { facingMode: "environment" }
+        })
+        
+        // Obtém o track do vídeo para controlar a lanterna
+        track = stream.getVideoTracks()[0]
+        
+        // Verifica se o dispositivo suporta o uso da lanterna
+        const capabilities = track.getCapabilities()
+        if (!capabilities.torch) {
+            console.log("Lanterna não suportada no dispositivo.")
+            return
+        }
+    } catch (error) {
+        console.error(`Erro ao inicializar a lanterna: ${error}`)
+    }
+}
+
+async function ligar(){
+    if (track) {
+        try {
+            await track.applyConstraints({ advanced: [{ torch: true }] })
+        } catch (error) {
+            console.error(`Erro ao inicializar a lanterna: ${error}`)
+        }
+    }
+}
+
+async function desligar(){
+
+}
